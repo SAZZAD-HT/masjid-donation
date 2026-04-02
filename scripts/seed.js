@@ -1,37 +1,11 @@
 // scripts/seed.js
 // Run with: node scripts/seed.js
-// Requires: NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY in .env.local
+// Uses Prisma client to seed data
 
-const { createClient } = require('@supabase/supabase-js');
+const { PrismaClient } = require('@prisma/client');
 const crypto = require('crypto');
-const fs = require('fs');
-const path = require('path');
 
-// Load .env.local manually (since this runs outside Next.js)
-const envPath = path.join(__dirname, '..', '.env.local');
-if (fs.existsSync(envPath)) {
-  const envContent = fs.readFileSync(envPath, 'utf-8');
-  envContent.split('\n').forEach(line => {
-    const trimmed = line.trim();
-    if (!trimmed || trimmed.startsWith('#')) return;
-    const eqIdx = trimmed.indexOf('=');
-    if (eqIdx > 0) {
-      const key = trimmed.slice(0, eqIdx).trim();
-      const val = trimmed.slice(eqIdx + 1).trim();
-      process.env[key] = val;
-    }
-  });
-}
-
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
-
-if (!supabaseUrl || !supabaseKey) {
-  console.error('❌ Missing Supabase env vars. Check .env.local');
-  process.exit(1);
-}
-
-const supabase = createClient(supabaseUrl, supabaseKey);
+const prisma = new PrismaClient();
 
 function genId() {
   return crypto.randomUUID();
@@ -112,50 +86,56 @@ const donations = [
 ];
 
 async function seed() {
-  console.log('🕌 Starting Al-Noor Masjid Supabase seed...\n');
+  console.log('🕌 Starting Al-Noor Masjid Prisma seed...\n');
 
   // Clear existing data
   console.log('🗑️  Clearing existing data...');
-  await supabase.from('donations').delete().neq('id', '00000000-0000-0000-0000-000000000000');
-  await supabase.from('campaigns').delete().neq('id', '00000000-0000-0000-0000-000000000000');
+  await prisma.donations.deleteMany({});
+  await prisma.campaigns.deleteMany({});
 
   console.log('📋 Seeding campaigns...');
   const campaignIds = [];
 
   for (const c of campaigns) {
-    const id = genId();
-    const { error } = await supabase.from('campaigns').insert({
-      id,
-      ...c,
-    });
-    if (error) {
-      console.error(`  ❌ Failed: "${c.title}"`, error.message);
-    } else {
+    try {
+      const id = genId();
+      await prisma.campaigns.create({
+        data: { id, ...c },
+      });
       campaignIds.push(id);
       console.log(`  ✅ "${c.title}"`);
+    } catch (err) {
+      console.error(`  ❌ Failed: "${c.title}"`, err.message);
     }
   }
 
   console.log('\n💰 Seeding donations...');
   for (const d of donations) {
-    const randomCampaignId = campaignIds[Math.floor(Math.random() * campaignIds.length)];
-    const { error } = await supabase.from('donations').insert({
-      id: genId(),
-      ...d,
-      campaignId: randomCampaignId,
-    });
-    if (error) {
-      console.error(`  ❌ Failed: ${d.donorName}`, error.message);
-    } else {
+    try {
+      const randomCampaignId = campaignIds[Math.floor(Math.random() * campaignIds.length)];
+      await prisma.donations.create({
+        data: {
+          id: genId(),
+          ...d,
+          phone: '',
+          campaignId: randomCampaignId,
+          approvedBy: '',
+          approvedAt: '',
+        },
+      });
       console.log(`  ✅ ${d.anonymous ? 'Anonymous' : d.donorName} — ৳${d.amount}`);
+    } catch (err) {
+      console.error(`  ❌ Failed: ${d.donorName}`, err.message);
     }
   }
 
-  console.log('\n🎉 Seed complete! Supabase database populated.');
+  console.log('\n🎉 Seed complete! Database populated via Prisma.');
+  await prisma.$disconnect();
   process.exit(0);
 }
 
-seed().catch(err => {
+seed().catch(async (err) => {
   console.error('❌ Seed failed:', err);
+  await prisma.$disconnect();
   process.exit(1);
 });

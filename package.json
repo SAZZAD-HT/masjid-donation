@@ -6,10 +6,16 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "postinstall": "prisma generate",
+    "db:generate": "prisma generate",
+    "db:push": "prisma db push",
+    "db:pull": "prisma db pull",
+    "db:studio": "prisma studio",
+    "db:seed": "node scripts/seed.js"
   },
   "dependencies": {
-    "@supabase/supabase-js": "^2.101.1",
+    "@prisma/client": "^6.5.0",
     "clsx": "^2.1.1",
     "framer-motion": "^11.3.8",
     "next": "14.2.5",
@@ -21,6 +27,7 @@
   },
   "devDependencies": {
     "eslint": "^8",
-    "eslint-config-next": "14.2.5"
+    "eslint-config-next": "14.2.5",
+    "prisma": "^6.5.0"
   }
 }

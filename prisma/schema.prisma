@@ -1,0 +1,88 @@
+// Prisma Schema for Masjid Donation Platform
+// Connected to Supabase PostgreSQL
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  // Connection pooling (PgBouncer) — used at runtime
+  url       = "postgresql://postgres.bawzcwvmvyhnnmcrfrye:q12wQ%21%40W@aws-1-ap-southeast-2.pooler.supabase.com:6543/postgres?pgbouncer=true"
+  // Direct connection — used for migrations
+  directUrl = "postgresql://postgres.bawzcwvmvyhnnmcrfrye:q12wQ%21%40W@aws-1-ap-southeast-2.pooler.supabase.com:5432/postgres"
+}
+
+model admin_users {
+  id          String   @id @default(uuid())
+  username    String   @unique
+  password    String
+  role        String   @default("admin")
+  displayName String   @default("")
+  email       String   @default("")
+  createdAt   DateTime @default(now())
+}
+
+model campaigns {
+  id          String   @id @default(uuid())
+  title       String   @default("")
+  description String   @default("")
+  goalAmount  Float    @default(0)
+  raisedAmount Float   @default(0)
+  donorCount  Int      @default(0)
+  category    String   @default("general")
+  endDate     String   @default("")
+  imageUrl    String   @default("")
+  active      Boolean  @default(true)
+  createdAt   DateTime @default(now())
+}
+
+model donations {
+  id            String   @id @default(uuid())
+  donorName     String   @default("Anonymous")
+  email         String   @default("")
+  phone         String   @default("")
+  amount        Float    @default(0)
+  campaignId    String   @default("")
+  category      String   @default("general")
+  donationType  String   @default("one-time")
+  paymentMethod String   @default("card")
+  message       String   @default("")
+  anonymous     Boolean  @default(false)
+  status        String   @default("pending")
+  approvedBy    String   @default("")
+  approvedAt    String   @default("")
+  createdAt     DateTime @default(now())
+}
+
+model volunteers {
+  id           String   @id @default(uuid())
+  name         String   @default("")
+  email        String   @default("")
+  phone        String   @default("")
+  roles        Json     @default("[]")
+  availability Json     @default("[]")
+  skills       Json     @default("[]")
+  message      String   @default("")
+  status       String   @default("pending")
+  createdAt    DateTime @default(now())
+}
+
+model newsletter {
+  id        String   @id @default(uuid())
+  email     String   @default("")
+  active    Boolean  @default(true)
+  createdAt DateTime @default(now())
+}
+
+model contacts {
+  id        String   @id @default(uuid())
+  name      String   @default("")
+  email     String   @default("")
+  phone     String   @default("")
+  subject   String   @default("General Enquiry")
+  message   String   @default("")
+  read      Boolean  @default(false)
+  ip        String   @default("unknown")
+  createdAt DateTime @default(now())
+}
