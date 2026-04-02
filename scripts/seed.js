@@ -1,14 +1,40 @@
 // scripts/seed.js
 // Run with: node scripts/seed.js
+// Requires: NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY in .env.local
 
-const db = require('../lib/db');
+const { createClient } = require('@supabase/supabase-js');
 const crypto = require('crypto');
+const fs = require('fs');
+const path = require('path');
+
+// Load .env.local manually (since this runs outside Next.js)
+const envPath = path.join(__dirname, '..', '.env.local');
+if (fs.existsSync(envPath)) {
+  const envContent = fs.readFileSync(envPath, 'utf-8');
+  envContent.split('\n').forEach(line => {
+    const trimmed = line.trim();
+    if (!trimmed || trimmed.startsWith('#')) return;
+    const eqIdx = trimmed.indexOf('=');
+    if (eqIdx > 0) {
+      const key = trimmed.slice(0, eqIdx).trim();
+      const val = trimmed.slice(eqIdx + 1).trim();
+      process.env[key] = val;
+    }
+  });
+}
+
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+
+if (!supabaseUrl || !supabaseKey) {
+  console.error('❌ Missing Supabase env vars. Check .env.local');
+  process.exit(1);
+}
+
+const supabase = createClient(supabaseUrl, supabaseKey);
 
 function genId() {
   return crypto.randomUUID();
-}
-function now() {
-  return new Date().toISOString();
 }
 
 const campaigns = [
@@ -20,7 +46,7 @@ const campaigns = [
     donorCount: 187,
     category: 'masjid',
     endDate: '2025-08-31',
-    active: 1,
+    active: true,
   },
   {
     title: 'Weekend Islamic School',
@@ -30,7 +56,7 @@ const campaigns = [
     donorCount: 94,
     category: 'education',
     endDate: '2025-07-01',
-    active: 1,
+    active: true,
   },
   {
     title: 'Ramadan Food Drive',
@@ -40,7 +66,7 @@ const campaigns = [
     donorCount: 312,
     category: 'food',
     endDate: '2025-03-31',
-    active: 0,
+    active: false,
   },
   {
     title: 'Clean Water for Yemen',
@@ -50,7 +76,7 @@ const campaigns = [
     donorCount: 143,
     category: 'water',
     endDate: '2025-12-31',
-    active: 1,
+    active: true,
   },
   {
     title: 'Community Medical Fund',
@@ -60,7 +86,7 @@ const campaigns = [
     donorCount: 56,
     category: 'medical',
     endDate: '2025-10-01',
-    active: 1,
+    active: true,
   },
   {
     title: 'Youth Sports & Activities Centre',
@@ -70,64 +96,62 @@ const campaigns = [
     donorCount: 228,
     category: 'youth',
     endDate: '2026-06-30',
-    active: 1,
+    active: true,
   },
 ];
 
 const donations = [
-  { donorName: 'Abdullah Rahman', email: 'abdullah@example.com', amount: 500, category: 'masjid', donationType: 'one-time', paymentMethod: 'card', message: 'May Allah accept this. JazakAllahu Khayran.', anonymous: 0, status: 'completed' },
-  { donorName: 'Fatima Al-Zahra', email: 'fatima@example.com', amount: 250, category: 'education', donationType: 'monthly', paymentMethod: 'bank', message: '', anonymous: 0, status: 'completed' },
-  { donorName: 'Anonymous', email: '', amount: 1000, category: 'water', donationType: 'one-time', paymentMethod: 'card', message: 'For the sake of Allah.', anonymous: 1, status: 'completed' },
-  { donorName: 'Omar Farouq', email: 'omar@example.com', amount: 100, category: 'food', donationType: 'one-time', paymentMethod: 'cash', message: 'Baraka Allahu feekum', anonymous: 0, status: 'completed' },
-  { donorName: 'Aisha Siddiqui', email: 'aisha@example.com', amount: 75, category: 'medical', donationType: 'one-time', paymentMethod: 'card', message: '', anonymous: 0, status: 'completed' },
-  { donorName: 'Muhammad Ali', email: 'mali@example.com', amount: 2500, category: 'masjid', donationType: 'one-time', paymentMethod: 'bank', message: 'In memory of my father, may Allah have mercy on him.', anonymous: 0, status: 'completed' },
-  { donorName: 'Khadijah Hassan', email: 'khadijah@example.com', amount: 50, category: 'youth', donationType: 'monthly', paymentMethod: 'card', message: '', anonymous: 0, status: 'completed' },
-  { donorName: 'Ibrahim Musa', email: 'ibrahim@example.com', amount: 300, category: 'general', donationType: 'one-time', paymentMethod: 'card', message: 'Ramadan Mubarak!', anonymous: 0, status: 'completed' },
+  { donorName: 'Abdullah Rahman', email: 'abdullah@example.com', amount: 500, category: 'masjid', donationType: 'one-time', paymentMethod: 'card', message: 'May Allah accept this. JazakAllahu Khayran.', anonymous: false, status: 'approved' },
+  { donorName: 'Fatima Al-Zahra', email: 'fatima@example.com', amount: 250, category: 'education', donationType: 'monthly', paymentMethod: 'bank', message: '', anonymous: false, status: 'approved' },
+  { donorName: 'Anonymous', email: '', amount: 1000, category: 'water', donationType: 'one-time', paymentMethod: 'card', message: 'For the sake of Allah.', anonymous: true, status: 'approved' },
+  { donorName: 'Omar Farouq', email: 'omar@example.com', amount: 100, category: 'food', donationType: 'one-time', paymentMethod: 'cash', message: 'Baraka Allahu feekum', anonymous: false, status: 'approved' },
+  { donorName: 'Aisha Siddiqui', email: 'aisha@example.com', amount: 75, category: 'medical', donationType: 'one-time', paymentMethod: 'card', message: '', anonymous: false, status: 'approved' },
+  { donorName: 'Muhammad Ali', email: 'mali@example.com', amount: 2500, category: 'masjid', donationType: 'one-time', paymentMethod: 'bank', message: 'In memory of my father, may Allah have mercy on him.', anonymous: false, status: 'approved' },
+  { donorName: 'Khadijah Hassan', email: 'khadijah@example.com', amount: 50, category: 'youth', donationType: 'monthly', paymentMethod: 'card', message: '', anonymous: false, status: 'approved' },
+  { donorName: 'Ibrahim Musa', email: 'ibrahim@example.com', amount: 300, category: 'general', donationType: 'one-time', paymentMethod: 'card', message: 'Ramadan Mubarak!', anonymous: false, status: 'approved' },
 ];
 
 async function seed() {
-  console.log('🕌 Starting Al-Noor Masjid SQLite seed...\n');
+  console.log('🕌 Starting Al-Noor Masjid Supabase seed...\n');
 
-  // Clear existing data (optional but good for seeding)
-  db.exec('DELETE FROM campaigns; DELETE FROM donations;');
-
-  const insertCamp = db.prepare(`
-    INSERT INTO campaigns (id, title, description, goalAmount, raisedAmount, donorCount, category, endDate, active, createdAt)
-    VALUES (@id, @title, @description, @goalAmount, @raisedAmount, @donorCount, @category, @endDate, @active, @createdAt)
-  `);
-
-  const insertDon = db.prepare(`
-    INSERT INTO donations (id, donorName, email, amount, campaignId, category, donationType, paymentMethod, message, anonymous, status, createdAt)
-    VALUES (@id, @donorName, @email, @amount, @campaignId, @category, @donationType, @paymentMethod, @message, @anonymous, @status, @createdAt)
-  `);
+  // Clear existing data
+  console.log('🗑️  Clearing existing data...');
+  await supabase.from('donations').delete().neq('id', '00000000-0000-0000-0000-000000000000');
+  await supabase.from('campaigns').delete().neq('id', '00000000-0000-0000-0000-000000000000');
 
   console.log('📋 Seeding campaigns...');
   const campaignIds = [];
 
-  const transaction = db.transaction(() => {
-    for (const c of campaigns) {
-      const id = genId();
-      insertCamp.run({ ...c, id, createdAt: now() });
+  for (const c of campaigns) {
+    const id = genId();
+    const { error } = await supabase.from('campaigns').insert({
+      id,
+      ...c,
+    });
+    if (error) {
+      console.error(`  ❌ Failed: "${c.title}"`, error.message);
+    } else {
       campaignIds.push(id);
       console.log(`  ✅ "${c.title}"`);
     }
+  }
 
-    console.log('\n💰 Seeding donations...');
-    for (const d of donations) {
-      const randomCampaignId = campaignIds[Math.floor(Math.random() * campaignIds.length)];
-      insertDon.run({
-        ...d,
-        id: genId(),
-        campaignId: randomCampaignId,
-        createdAt: now(),
-      });
-      console.log(`  ✅ ${d.donorName === 'Anonymous' || d.anonymous ? 'Anonymous' : d.donorName} — $${d.amount}`);
+  console.log('\n💰 Seeding donations...');
+  for (const d of donations) {
+    const randomCampaignId = campaignIds[Math.floor(Math.random() * campaignIds.length)];
+    const { error } = await supabase.from('donations').insert({
+      id: genId(),
+      ...d,
+      campaignId: randomCampaignId,
+    });
+    if (error) {
+      console.error(`  ❌ Failed: ${d.donorName}`, error.message);
+    } else {
+      console.log(`  ✅ ${d.anonymous ? 'Anonymous' : d.donorName} — ৳${d.amount}`);
     }
-  });
+  }
 
-  transaction();
-
-  console.log('\n🎉 Seed complete! SQLite database populated.');
+  console.log('\n🎉 Seed complete! Supabase database populated.');
   process.exit(0);
 }
 

@@ -10,7 +10,7 @@ export async function POST(request) {
       return NextResponse.json({ error: 'Valid email required' }, { status: 400 });
     }
 
-    const { id } = addNewsletter(email);
+    const { id } = await addNewsletter(email);
     return NextResponse.json({ success: true, id });
   } catch (err) {
     console.error('API Error /api/newsletter/subscribe:', err);

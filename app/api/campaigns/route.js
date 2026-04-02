@@ -7,12 +7,12 @@ export async function GET(request) {
     const id = searchParams.get('id');
 
     if (id) {
-      const campaign = getCampaign(id);
+      const campaign = await getCampaign(id);
       if (!campaign) return NextResponse.json({ error: 'Not found' }, { status: 404 });
       return NextResponse.json(campaign);
     }
 
-    const campaigns = getCampaigns();
+    const campaigns = await getCampaigns();
     return NextResponse.json(campaigns);
   } catch (err) {
     console.error('API Error /api/campaigns:', err);

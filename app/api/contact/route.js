@@ -19,7 +19,7 @@ export async function POST(request) {
       return NextResponse.json({ error: 'Message flagged as spam' }, { status: 400 });
     }
 
-    const { id } = addContact({
+    const { id } = await addContact({
       name: name.trim(),
       email: email.trim().toLowerCase(),
       phone: phone?.trim() || '',

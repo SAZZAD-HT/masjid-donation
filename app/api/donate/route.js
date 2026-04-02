@@ -28,7 +28,7 @@ export async function POST(request) {
     }
 
     // Record donation
-    const { id } = submitDonation({
+    const { id } = await submitDonation({
       donorName: anonymous ? 'Anonymous' : donorName?.trim() || 'Anonymous',
       email: anonymous ? '' : email?.trim().toLowerCase() || '',
       amount: numAmount,

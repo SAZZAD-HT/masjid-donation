@@ -11,8 +11,8 @@ export async function GET(request) {
   }
 
   try {
-    const donations = getDonations();
-    const campaigns = getCampaigns();
+    const donations = await getDonations();
+    const campaigns = await getCampaigns();
 
     // ── Totals ──────────────────────────────────────────────────────────────
     const totalRaised = donations.reduce((s, d) => s + (d.amount || 0), 0);

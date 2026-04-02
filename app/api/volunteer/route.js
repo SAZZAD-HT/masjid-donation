@@ -10,7 +10,7 @@ export async function POST(request) {
       return NextResponse.json({ error: 'Name and email are required' }, { status: 400 });
     }
 
-    const { id } = addVolunteer({ name, email, phone, roles, availability, skills, message });
+    const { id } = await addVolunteer({ name, email, phone, roles, availability, skills, message });
     return NextResponse.json({ success: true, id });
   } catch (err) {
     console.error('API Error /api/volunteer:', err);

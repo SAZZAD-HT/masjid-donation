@@ -9,16 +9,16 @@ export async function GET(request) {
     const limit = searchParams.get('limit');
 
     if (id) {
-      const donation = getDonation(id);
+      const donation = await getDonation(id);
       if (!donation) return NextResponse.json({ error: 'Not found' }, { status: 404 });
       return NextResponse.json(donation);
     }
 
     if (campaignId) {
-      return NextResponse.json(getDonationsByCampaign(campaignId));
+      return NextResponse.json(await getDonationsByCampaign(campaignId));
     }
 
-    const donations = getDonations(limit ? Number(limit) : null);
+    const donations = await getDonations(limit ? Number(limit) : null);
     return NextResponse.json(donations);
   } catch (err) {
     console.error('API Error /api/donations:', err);

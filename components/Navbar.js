@@ -31,10 +31,10 @@ export default function Navbar() {
       right: 0,
       zIndex: 100,
       padding: '16px 0',
-      background: scrolled ? 'rgba(14,59,34,0.97)' : 'transparent',
+      background: scrolled ? 'rgba(27,107,74,0.95)' : 'transparent',
       backdropFilter: scrolled ? 'blur(12px)' : 'none',
       transition: 'all 0.4s ease',
-      borderBottom: scrolled ? '1px solid rgba(201,151,58,0.2)' : 'none',
+      borderBottom: scrolled ? '1px solid rgba(212,162,62,0.2)' : 'none',
     }}>
       <div className="container" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
 
@@ -42,7 +42,7 @@ export default function Navbar() {
         <Link href="/" style={{ textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '12px' }}>
           <div style={{
             width: 40, height: 40,
-            background: 'linear-gradient(135deg, #c9973a, #e8b84b)',
+            background: 'linear-gradient(135deg, #d4a23e, #edc05a)',
             borderRadius: '50%',
             display: 'flex', alignItems: 'center', justifyContent: 'center',
             fontSize: '1.2rem',
@@ -63,8 +63,8 @@ export default function Navbar() {
               fontSize: '0.95rem',
               transition: 'color 0.2s',
             }}
-              onMouseEnter={e => e.target.style.color = '#e8b84b'}
-              onMouseLeave={e => e.target.style.color = 'rgba(255,255,255,0.85)'}
+              onMouseEnter={e => e.target.style.color = '#edc05a'}
+              onMouseLeave={e => e.target.style.color = 'rgba(255,255,255,0.9)'}
             >{label}</Link>
           ))}
           <Link href="/donate" className="btn-primary" style={{ padding: '10px 24px', fontSize: '0.9rem' }}>
@@ -87,7 +87,7 @@ export default function Navbar() {
       {/* Mobile Menu */}
       {menuOpen && (
         <div style={{
-          background: 'rgba(14,59,34,0.98)',
+          background: 'rgba(27,107,74,0.97)',
           padding: '24px',
           display: 'flex',
           flexDirection: 'column',

@@ -2,27 +2,27 @@
 import { NextResponse } from 'next/server';
 import { authenticateAdmin, updateDonationStatus, submitDonation, getDonationsByStatus } from '@/lib/queries';
 
-function verifyAdmin(request) {
+async function verifyAdmin(request) {
   const username = request.headers.get('x-admin-user');
   const password = request.headers.get('x-admin-pass');
   if (!username || !password) return null;
-  return authenticateAdmin(username, password);
+  return await authenticateAdmin(username, password);
 }
 
 // GET — get donations by status
 export async function GET(request) {
-  const admin = verifyAdmin(request);
+  const admin = await verifyAdmin(request);
   if (!admin) return NextResponse.json({ error: 'Admin access required' }, { status: 403 });
 
   const { searchParams } = new URL(request.url);
   const status = searchParams.get('status') || 'pending';
-  const donations = getDonationsByStatus(status);
+  const donations = await getDonationsByStatus(status);
   return NextResponse.json(donations);
 }
 
 // POST — admin enters a manual donation (auto-approved)
 export async function POST(request) {
-  const admin = verifyAdmin(request);
+  const admin = await verifyAdmin(request);
   if (!admin) return NextResponse.json({ error: 'Admin access required' }, { status: 403 });
 
   try {
@@ -31,7 +31,7 @@ export async function POST(request) {
       return NextResponse.json({ error: 'Valid amount required' }, { status: 400 });
     }
     // Manual entry is auto-approved
-    const result = submitDonation({
+    const result = await submitDonation({
       ...data,
       status: 'approved',
       approvedBy: admin.username,
@@ -46,7 +46,7 @@ export async function POST(request) {
 
 // PATCH — approve or reject a donation
 export async function PATCH(request) {
-  const admin = verifyAdmin(request);
+  const admin = await verifyAdmin(request);
   if (!admin) return NextResponse.json({ error: 'Admin access required' }, { status: 403 });
 
   try {
@@ -54,7 +54,7 @@ export async function PATCH(request) {
     if (!id || !['approved', 'rejected'].includes(status)) {
       return NextResponse.json({ error: 'Valid id and status (approved/rejected) required' }, { status: 400 });
     }
-    updateDonationStatus(id, status, admin.username);
+    await updateDonationStatus(id, status, admin.username);
     return NextResponse.json({ success: true, id, status });
   } catch (e) {
     return NextResponse.json({ error: e.message }, { status: 500 });

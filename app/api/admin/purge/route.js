@@ -12,7 +12,7 @@ export async function DELETE(request) {
     return NextResponse.json({ error: 'Credentials required' }, { status: 401 });
   }
 
-  const user = authenticateAdmin(username, password);
+  const user = await authenticateAdmin(username, password);
   if (!user || user.role !== 'super_admin') {
     return NextResponse.json({ error: 'Super Admin access required' }, { status: 403 });
   }
@@ -23,7 +23,7 @@ export async function DELETE(request) {
   }
 
   try {
-    purgeAllData();
+    await purgeAllData();
     return NextResponse.json({
       success: true,
       message: 'All data (donations, campaigns, contacts, volunteers, newsletter) has been purged. Admin users preserved.',

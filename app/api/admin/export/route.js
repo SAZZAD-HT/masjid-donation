@@ -14,7 +14,7 @@ export async function GET(request) {
   let adminUser = null;
 
   if (username && password) {
-    adminUser = authenticateAdmin(username, password);
+    adminUser = await authenticateAdmin(username, password);
     if (adminUser) authorized = true;
   } else if (legacyPass) {
     // Legacy check
@@ -31,7 +31,7 @@ export async function GET(request) {
   const emailTo = searchParams.get('email');
 
   try {
-    const donations = getDonations();
+    const donations = await getDonations();
 
     // Build CSV
     const headers = ['ID', 'Donor Name', 'Email', 'Amount (৳)', 'Category', 'Type', 'Payment', 'Campaign ID', 'Message', 'Anonymous', 'Status', 'Approved By', 'Approved At', 'Date'];

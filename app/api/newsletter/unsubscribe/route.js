@@ -18,7 +18,7 @@ export async function GET(request) {
   }
 
   try {
-    const unsubscribed = unsubscribeNewsletterByEmail(email);
+    const unsubscribed = await unsubscribeNewsletterByEmail(email);
 
     if (!unsubscribed) {
       return new Response(unsubscribePage('Email not found or already unsubscribed.', false), {
