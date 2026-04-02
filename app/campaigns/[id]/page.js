@@ -11,7 +11,7 @@ const ICONS = {
 };
 
 const MOTIVATIONAL = [
-  '"The believer\\'s shade on the Day of Resurrection will be his charity." — Prophet ﷺ',
+  '"The believer\'s shade on the Day of Resurrection will be his charity." — Prophet ﷺ',
   '"Give charity without delay, for it stands in the way of calamity." — Prophet ﷺ',
   '"Charity extinguishes sin as water extinguishes fire." — Prophet ﷺ',
   '"The best charity is that given when one is wealthy." — Prophet ﷺ',
