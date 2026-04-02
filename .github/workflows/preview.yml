@@ -1,0 +1,65 @@
+# .github/workflows/preview.yml
+# Creates a Vercel preview deployment on every PR
+
+name: 🔍 Preview Deployment
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+jobs:
+  preview:
+    name: Deploy Preview
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - run: npm ci
+
+      - run: npm install -g vercel@latest
+
+      - name: Pull Vercel environment
+        run: vercel pull --yes --environment=preview --token=${{ secrets.VERCEL_TOKEN }}
+
+      - name: Build preview
+        run: vercel build --token=${{ secrets.VERCEL_TOKEN }}
+        env:
+          NEXT_PUBLIC_FIREBASE_API_KEY: ${{ secrets.NEXT_PUBLIC_FIREBASE_API_KEY }}
+          NEXT_PUBLIC_FIREBASE_PROJECT_ID: ${{ secrets.NEXT_PUBLIC_FIREBASE_PROJECT_ID }}
+          NEXT_PUBLIC_ADMIN_PASSWORD: preview123
+
+      - name: Deploy preview
+        id: deploy
+        run: |
+          url=$(vercel deploy --prebuilt --token=${{ secrets.VERCEL_TOKEN }})
+          echo "url=$url" >> $GITHUB_OUTPUT
+
+      - name: Post preview URL as PR comment
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const url = '${{ steps.deploy.outputs.url }}';
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: [
+                '## 🕌 Preview Deployment Ready!',
+                '',
+                `🔗 **URL:** ${url}`,
+                '',
+                '| Page | Link |',
+                '|------|------|',
+                `| 🏠 Home | [Visit](${url}/) |`,
+                `| 📋 Campaigns | [Visit](${url}/campaigns) |`,
+                `| 💰 Donate | [Visit](${url}/donate) |`,
+                `| 🧮 Zakat | [Visit](${url}/zakat) |`,
+                `| 📊 Transparency | [Visit](${url}/transparency) |`,
+              ].join('\n')
+            });

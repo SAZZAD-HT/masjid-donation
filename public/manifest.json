@@ -1,0 +1,56 @@
+{
+  "name": "Al-Noor Masjid Donation Platform",
+  "short_name": "Al-Noor Masjid",
+  "description": "Donate to Al-Noor Masjid campaigns and support your community.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0e3b22",
+  "theme_color": "#1a5c38",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/icons/icon-192.svg",
+      "sizes": "192x192",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icons/icon-192.svg",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["finance", "lifestyle", "religion"],
+  "screenshots": [
+    {
+      "src": "/screenshots/home.png",
+      "sizes": "1280x800",
+      "type": "image/png",
+      "label": "Home Page"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Donate Now",
+      "short_name": "Donate",
+      "description": "Make a quick donation",
+      "url": "/donate",
+      "icons": [{ "src": "/icons/donate-96.png", "sizes": "96x96" }]
+    },
+    {
+      "name": "Campaigns",
+      "short_name": "Campaigns",
+      "description": "Browse active campaigns",
+      "url": "/campaigns",
+      "icons": [{ "src": "/icons/campaigns-96.png", "sizes": "96x96" }]
+    },
+    {
+      "name": "Zakat Calculator",
+      "short_name": "Zakat",
+      "description": "Calculate your Zakat",
+      "url": "/zakat",
+      "icons": [{ "src": "/icons/zakat-96.png", "sizes": "96x96" }]
+    }
+  ]
+}
