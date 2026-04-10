@@ -11,6 +11,13 @@ function genId() {
   return crypto.randomUUID();
 }
 
+// ── Admin Users ──────────────────────────────────────────────────────────────
+const adminUsers = [
+  { username: 'superadmin', password: 'Super@2026', role: 'super_admin', displayName: 'Super Admin', email: 'superadmin@alnoormasjid.org' },
+  { username: 'admin',      password: 'Admin@2026', role: 'admin',       displayName: 'Admin',       email: 'admin@alnoormasjid.org' },
+];
+
+// ── Campaigns ────────────────────────────────────────────────────────────────
 const campaigns = [
   {
     title: 'Masjid Renovation Fund',
@@ -92,6 +99,20 @@ async function seed() {
   console.log('🗑️  Clearing existing data...');
   await prisma.donations.deleteMany({});
   await prisma.campaigns.deleteMany({});
+  await prisma.admin_users.deleteMany({});
+
+  // ── Seed Admin Users ────────────────────────────────────────────────────────
+  console.log('👤 Seeding admin users...');
+  for (const u of adminUsers) {
+    try {
+      await prisma.admin_users.create({
+        data: { id: genId(), ...u },
+      });
+      console.log(`  ✅ ${u.username} (${u.role})`);
+    } catch (err) {
+      console.error(`  ❌ Failed: ${u.username}`, err.message);
+    }
+  }
 
   console.log('📋 Seeding campaigns...');
   const campaignIds = [];

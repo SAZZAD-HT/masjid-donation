@@ -1,12 +1,18 @@
 // app/api/analytics/route.js
 import { NextResponse } from 'next/server';
-import { getDonations, getCampaigns } from '@/lib/queries';
+import { getDonations, getCampaigns, authenticateAdmin } from '@/lib/queries';
 
 export async function GET(request) {
-  const authHeader = request.headers.get('x-admin-password');
-  const adminPassword = process.env.NEXT_PUBLIC_ADMIN_PASSWORD || 'admin123';
+  // Verify admin credentials via DB
+  const username = request.headers.get('x-admin-user');
+  const password = request.headers.get('x-admin-pass');
 
-  if (authHeader !== adminPassword) {
+  if (!username || !password) {
+    return NextResponse.json({ error: 'Admin credentials required' }, { status: 401 });
+  }
+
+  const adminUser = await authenticateAdmin(username, password);
+  if (!adminUser) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 

@@ -299,7 +299,7 @@ export default function AdminPage() {
     <div style={{ minHeight:'100vh', display:'flex', alignItems:'center', justifyContent:'center', background:'var(--cream)', paddingTop:80 }}>
       <div className="card" style={{ padding:'52px 44px', width:'100%', maxWidth:420, textAlign:'center' }}>
         <div style={{ fontSize:'3.5rem', marginBottom:16 }}>🔐</div>
-        <h2 style={{ fontFamily:'Playfair Display, serif', marginBottom:8 }}>Admin Login</h2>
+        <h2 style={{ fontFamily:'Playfair Display, serif', marginBottom:8, color:'var(--charcoal)' }}>Admin Login</h2>
         <p style={{ color:'var(--muted)', marginBottom:28, fontSize:'0.88rem', lineHeight:1.7 }}>
           Enter your credentials to access the dashboard.
         </p>
@@ -313,7 +313,7 @@ export default function AdminPage() {
           {loginLoading ? '⌛ Logging in…' : 'Enter Dashboard →'}
         </button>
         <p style={{ color:'var(--muted)', fontSize:'0.72rem', marginTop:14 }}>
-          Default: <code>superadmin</code> / <code>super123</code> or <code>admin</code> / <code>admin123</code>
+          Default: <code style={{ background:'var(--parchment)', color:'var(--emerald)', padding:'2px 6px', borderRadius:4, fontSize:'0.72rem' }}>superadmin</code> / <code style={{ background:'var(--parchment)', color:'var(--emerald)', padding:'2px 6px', borderRadius:4, fontSize:'0.72rem' }}>Super@2026</code> or <code style={{ background:'var(--parchment)', color:'var(--emerald)', padding:'2px 6px', borderRadius:4, fontSize:'0.72rem' }}>admin</code> / <code style={{ background:'var(--parchment)', color:'var(--emerald)', padding:'2px 6px', borderRadius:4, fontSize:'0.72rem' }}>Admin@2026</code>
         </p>
       </div>
     </div>
@@ -345,7 +345,7 @@ export default function AdminPage() {
       </div>
 
       {/* Tabs */}
-      <div style={{ background:'#fff', borderBottom:'1px solid rgba(26,92,56,0.1)', overflowX:'auto' }}>
+      <div style={{ background:'var(--white)', borderBottom:'1px solid rgba(26,92,56,0.1)', overflowX:'auto' }}>
         <div className="container" style={{ display:'flex' }}>
           {TABS.map(t => {
             const badge = t==='Inbox'?unreadCount : t==='Volunteers'?pendingVols : t==='Pending'?pendingCount : 0;

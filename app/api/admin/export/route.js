@@ -7,7 +7,7 @@ export async function GET(request) {
   const username = request.headers.get('x-admin-user');
   const password = request.headers.get('x-admin-pass');
 
-  // Also support legacy single-password auth for backward compat
+  // Also support legacy single-password header (redirects to DB auth)
   const legacyPass = request.headers.get('x-admin-password');
 
   let authorized = false;
@@ -16,10 +16,6 @@ export async function GET(request) {
   if (username && password) {
     adminUser = await authenticateAdmin(username, password);
     if (adminUser) authorized = true;
-  } else if (legacyPass) {
-    // Legacy check
-    const adminPassword = process.env.NEXT_PUBLIC_ADMIN_PASSWORD || 'admin123';
-    if (legacyPass === adminPassword) authorized = true;
   }
 
   if (!authorized) {

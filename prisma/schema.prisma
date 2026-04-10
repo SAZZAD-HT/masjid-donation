@@ -1,16 +1,11 @@
-// Prisma Schema for Masjid Donation Platform
-// Connected to Supabase PostgreSQL
-
 generator client {
   provider = "prisma-client-js"
 }
 
 datasource db {
   provider  = "postgresql"
-  // Connection pooling (PgBouncer) — used at runtime
-  url       = "postgresql://postgres.bawzcwvmvyhnnmcrfrye:q12wQ%21%40W@aws-1-ap-southeast-2.pooler.supabase.com:6543/postgres?pgbouncer=true"
-  // Direct connection — used for migrations
-  directUrl = "postgresql://postgres.bawzcwvmvyhnnmcrfrye:q12wQ%21%40W@aws-1-ap-southeast-2.pooler.supabase.com:5432/postgres"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
 }
 
 model admin_users {
@@ -24,17 +19,17 @@ model admin_users {
 }
 
 model campaigns {
-  id          String   @id @default(uuid())
-  title       String   @default("")
-  description String   @default("")
-  goalAmount  Float    @default(0)
-  raisedAmount Float   @default(0)
-  donorCount  Int      @default(0)
-  category    String   @default("general")
-  endDate     String   @default("")
-  imageUrl    String   @default("")
-  active      Boolean  @default(true)
-  createdAt   DateTime @default(now())
+  id           String   @id @default(uuid())
+  title        String   @default("")
+  description  String   @default("")
+  goalAmount   Float    @default(0)
+  raisedAmount Float    @default(0)
+  donorCount   Int      @default(0)
+  category     String   @default("general")
+  endDate      String   @default("")
+  imageUrl     String   @default("")
+  active       Boolean  @default(true)
+  createdAt    DateTime @default(now())
 }
 
 model donations {
