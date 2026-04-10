@@ -164,6 +164,149 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* ═══════════════════════════════════ HOW IT WORKS ══ */}
+      <section className="section" style={{ background: 'var(--cream)' }}>
+        <div className="container">
+          <div style={{ textAlign: 'center', marginBottom: 56 }}>
+            <div className="badge badge-emerald" style={{ marginBottom: 12 }}>🔄 How It Works / কিভাবে কাজ করে</div>
+            <h2 style={{ fontFamily: 'Playfair Display, serif', fontSize: 'clamp(2rem, 4vw, 3rem)', marginBottom: 12 }}>
+              Donation Workflow
+            </h2>
+            <p style={{ fontFamily: 'Amiri, serif', fontSize: '1.3rem', color: 'var(--gold)', marginBottom: 8 }}>
+              দান প্রক্রিয়া কিভাবে পরিচালিত হয়
+            </p>
+            <p style={{ color: 'var(--muted)', maxWidth: 560, margin: '0 auto', fontSize: '1rem', lineHeight: 1.7 }}>
+              A transparent, secure process from your generous donation to real community impact.
+              <br />
+              <span style={{ fontFamily: 'Amiri, serif', fontSize: '0.95rem' }}>আপনার দান থেকে সম্প্রদায়ের কল্যাণ পর্যন্ত — একটি স্বচ্ছ ও নিরাপদ প্রক্রিয়া।</span>
+            </p>
+          </div>
+
+          {/* ── Donor Workflow ─────────────────────────────────── */}
+          <div style={{ marginBottom: 48 }}>
+            <h3 style={{ fontFamily: 'Playfair Display, serif', fontSize: '1.3rem', textAlign: 'center', marginBottom: 32 }}>
+              🤲 Donor Journey <span style={{ color: 'var(--muted)', fontSize: '0.9rem', fontFamily: 'Amiri, serif' }}>— দাতার ধাপসমূহ</span>
+            </h3>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: 0, position: 'relative' }}>
+              {[
+                { step: 1, icon: '🕌', titleEN: 'Choose Campaign', titleBN: 'ক্যাম্পেইন নির্বাচন', descEN: 'Browse active campaigns or donate generally to the Masjid.', descBN: 'সক্রিয় ক্যাম্পেইন দেখুন অথবা মসজিদে সাধারণ দান করুন।', color: 'var(--emerald)' },
+                { step: 2, icon: '💰', titleEN: 'Enter Amount', titleBN: 'পরিমাণ লিখুন', descEN: 'Select a preset amount or enter your own custom donation.', descBN: 'প্রিসেট পরিমাণ নির্বাচন করুন অথবা নিজের পরিমাণ লিখুন।', color: 'var(--gold)' },
+                { step: 3, icon: '📝', titleEN: 'Fill Details', titleBN: 'তথ্য পূরণ', descEN: 'Provide name, email & optional message. Stay anonymous if you prefer.', descBN: 'নাম, ইমেইল ও ঐচ্ছিক বার্তা দিন। বেনামে থাকতে পারবেন।', color: '#6366f1' },
+                { step: 4, icon: '✅', titleEN: 'Submit & Receipt', titleBN: 'জমা দিন ও রসিদ', descEN: 'Donation is submitted for review. Get a printable receipt instantly.', descBN: 'দান পর্যালোচনার জন্য জমা হবে। তৎক্ষণাৎ রসিদ পাবেন।', color: '#ec4899' },
+              ].map(({ step, icon, titleEN, titleBN, descEN, descBN, color }, i) => (
+                <div key={step} style={{ padding: '0 16px', position: 'relative' }}>
+                  {/* Connector line */}
+                  {i < 3 && (
+                    <div style={{ 
+                      position: 'absolute', top: 36, right: -8, width: 16, height: 3,
+                      background: 'linear-gradient(90deg, var(--emerald), var(--gold))',
+                      borderRadius: 2, zIndex: 1, display: 'var(--connector-display, block)'
+                    }} className="workflow-connector" />
+                  )}
+                  <div className="card" style={{ padding: '28px 20px', textAlign: 'center', height: '100%', position: 'relative', borderTop: `3px solid ${color}` }}>
+                    {/* Step number */}
+                    <div style={{
+                      position: 'absolute', top: -16, left: '50%', transform: 'translateX(-50%)',
+                      width: 32, height: 32, background: color, color: '#fff',
+                      borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center',
+                      fontSize: '0.82rem', fontWeight: 800, boxShadow: `0 4px 12px ${color}40`
+                    }}>{step}</div>
+                    <div style={{ fontSize: '2.2rem', marginTop: 12, marginBottom: 12 }}>{icon}</div>
+                    <h4 style={{ fontFamily: 'Playfair Display, serif', fontSize: '1rem', marginBottom: 2, color: 'var(--charcoal)' }}>{titleEN}</h4>
+                    <p style={{ fontFamily: 'Amiri, serif', fontSize: '0.92rem', color, marginBottom: 10 }}>{titleBN}</p>
+                    <p style={{ color: 'var(--muted)', fontSize: '0.82rem', lineHeight: 1.6, marginBottom: 4 }}>{descEN}</p>
+                    <p style={{ fontFamily: 'Amiri, serif', color: 'var(--muted)', fontSize: '0.78rem', lineHeight: 1.5, opacity: 0.8 }}>{descBN}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* ── Flow Diagram ──────────────────────────────────── */}
+          <div className="card" style={{ padding: '36px 32px', marginBottom: 48, background: 'var(--white)', overflow: 'hidden' }}>
+            <h3 style={{ fontFamily: 'Playfair Display, serif', fontSize: '1.15rem', textAlign: 'center', marginBottom: 28 }}>
+              📊 System Flow Diagram <span style={{ color: 'var(--muted)', fontSize: '0.85rem', fontFamily: 'Amiri, serif' }}>— সিস্টেম ফ্লো ডায়াগ্রাম</span>
+            </h3>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 0, flexWrap: 'wrap', padding: '12px 0' }}>
+              {[
+                { label: 'Donor\nদাতা', icon: '👤', bg: 'var(--emerald)' },
+                { arrow: true },
+                { label: 'Donation Form\nদান ফর্ম', icon: '📝', bg: '#6366f1' },
+                { arrow: true },
+                { label: 'Pending Review\nপর্যালোচনাধীন', icon: '⏳', bg: 'var(--gold)' },
+                { arrow: true },
+                { label: 'Admin Approval\nঅ্যাডমিন অনুমোদন', icon: '🛡️', bg: '#ec4899' },
+                { arrow: true },
+                { label: 'Campaign Updated\nক্যাম্পেইন আপডেট', icon: '✅', bg: 'var(--emerald)' },
+              ].map((item, i) => (
+                item.arrow ? (
+                  <div key={`arrow-${i}`} style={{ padding: '0 4px', color: 'var(--muted)', fontSize: '1.2rem', flexShrink: 0 }}>→</div>
+                ) : (
+                  <div key={`node-${i}`} style={{
+                    background: item.bg, color: '#fff', padding: '14px 16px', borderRadius: 12,
+                    textAlign: 'center', minWidth: 120, fontSize: '0.72rem', fontWeight: 600,
+                    lineHeight: 1.5, boxShadow: `0 4px 16px ${item.bg}30`, flexShrink: 0,
+                  }}>
+                    <div style={{ fontSize: '1.4rem', marginBottom: 4 }}>{item.icon}</div>
+                    <div style={{ whiteSpace: 'pre-line' }}>{item.label}</div>
+                  </div>
+                )
+              ))}
+            </div>
+          </div>
+
+          {/* ── Admin Workflow ────────────────────────────────── */}
+          <div>
+            <h3 style={{ fontFamily: 'Playfair Display, serif', fontSize: '1.3rem', textAlign: 'center', marginBottom: 32 }}>
+              🛡️ Admin Process <span style={{ color: 'var(--muted)', fontSize: '0.9rem', fontFamily: 'Amiri, serif' }}>— অ্যাডমিন প্রক্রিয়া</span>
+            </h3>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: 0 }}>
+              {[
+                { step: 1, icon: '🔐', titleEN: 'Secure Login', titleBN: 'নিরাপদ লগইন', descEN: 'Admins authenticate with username & password via encrypted connection.', descBN: 'অ্যাডমিনরা এনক্রিপ্টেড সংযোগের মাধ্যমে লগইন করেন।', color: 'var(--emerald)' },
+                { step: 2, icon: '⏳', titleEN: 'Review Donations', titleBN: 'দান পর্যালোচনা', descEN: 'Pending donations appear with donor details. Approve or reject each one.', descBN: 'দাতার তথ্যসহ পেন্ডিং দান দেখুন। প্রতিটি অনুমোদন বা বাতিল করুন।', color: 'var(--gold)' },
+                { step: 3, icon: '📊', titleEN: 'Track & Report', titleBN: 'ট্র্যাক ও রিপোর্ট', descEN: 'View analytics dashboard, export CSV reports, and email summaries.', descBN: 'অ্যানালিটিক্স ড্যাশবোর্ড দেখুন, CSV রিপোর্ট ডাউনলোড করুন।', color: '#6366f1' },
+                { step: 4, icon: '🌟', titleEN: 'Community Impact', titleBN: 'সম্প্রদায়ের কল্যাণ', descEN: 'Approved donations update campaign totals and appear on the transparency page.', descBN: 'অনুমোদিত দান ক্যাম্পেইনে যোগ হয় এবং স্বচ্ছতা পৃষ্ঠায় দেখায়।', color: '#ec4899' },
+              ].map(({ step, icon, titleEN, titleBN, descEN, descBN, color }) => (
+                <div key={step} style={{ padding: '0 16px' }}>
+                  <div className="card" style={{ padding: '28px 20px', textAlign: 'center', height: '100%', position: 'relative', borderTop: `3px solid ${color}` }}>
+                    <div style={{
+                      position: 'absolute', top: -16, left: '50%', transform: 'translateX(-50%)',
+                      width: 32, height: 32, background: color, color: '#fff',
+                      borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center',
+                      fontSize: '0.82rem', fontWeight: 800, boxShadow: `0 4px 12px ${color}40`
+                    }}>{step}</div>
+                    <div style={{ fontSize: '2.2rem', marginTop: 12, marginBottom: 12 }}>{icon}</div>
+                    <h4 style={{ fontFamily: 'Playfair Display, serif', fontSize: '1rem', marginBottom: 2, color: 'var(--charcoal)' }}>{titleEN}</h4>
+                    <p style={{ fontFamily: 'Amiri, serif', fontSize: '0.92rem', color, marginBottom: 10 }}>{titleBN}</p>
+                    <p style={{ color: 'var(--muted)', fontSize: '0.82rem', lineHeight: 1.6, marginBottom: 4 }}>{descEN}</p>
+                    <p style={{ fontFamily: 'Amiri, serif', color: 'var(--muted)', fontSize: '0.78rem', lineHeight: 1.5, opacity: 0.8 }}>{descBN}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* ── Key Features ─────────────────────────────────── */}
+          <div style={{ marginTop: 48, display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: 20 }}>
+            {[
+              { icon: '🔒', titleEN: 'Secure & Encrypted', titleBN: 'নিরাপদ ও এনক্রিপ্টেড', desc: 'All data is encrypted and protected with industry-standard security.' },
+              { icon: '📊', titleEN: '100% Transparent', titleBN: '১০০% স্বচ্ছ', desc: 'Every donation is publicly visible on our transparency page.' },
+              { icon: '⚡', titleEN: 'Real-Time Updates', titleBN: 'রিয়েল-টাইম আপডেট', desc: 'Campaign totals update instantly when donations are approved.' },
+              { icon: '🧾', titleEN: 'Instant Receipt', titleBN: 'তাৎক্ষণিক রসিদ', desc: 'Printable receipt with donation details generated immediately.' },
+            ].map(({ icon, titleEN, titleBN, desc }) => (
+              <div key={titleEN} style={{ display: 'flex', gap: 14, alignItems: 'flex-start', padding: '20px', background: 'var(--parchment)', borderRadius: 'var(--radius)', border: '1px solid rgba(34,129,90,0.08)' }}>
+                <div style={{ fontSize: '1.8rem', flexShrink: 0 }}>{icon}</div>
+                <div>
+                  <div style={{ fontWeight: 700, color: 'var(--emerald)', fontSize: '0.92rem', marginBottom: 2 }}>{titleEN}</div>
+                  <div style={{ fontFamily: 'Amiri, serif', color: 'var(--gold)', fontSize: '0.85rem', marginBottom: 6 }}>{titleBN}</div>
+                  <div style={{ color: 'var(--muted)', fontSize: '0.82rem', lineHeight: 1.6 }}>{desc}</div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* ════════════════════════════════════ LIVE FEED + VERSE ══ */}
       <section style={{ padding: '64px 0', background: 'var(--parchment)' }}>
         <div className="container">
@@ -336,6 +479,7 @@ export default function HomePage() {
           section .container > div[style*="grid-template-columns: 1fr 1fr"] { grid-template-columns: 1fr !important; }
           section .container > div[style*="grid-template-columns: 1fr 360px"] { grid-template-columns: 1fr !important; }
           div[style*="position: sticky"] { position: static !important; }
+          .workflow-connector { display: none !important; }
         }
       `}</style>
     </>
